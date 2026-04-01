@@ -119,10 +119,10 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
     state.hasDrawing = true;
     context.beginPath();
     context.moveTo(point.x, point.y);
-    context.lineWidth = 2;
+    context.lineWidth = 1.2;
     context.lineCap = "round";
     context.lineJoin = "round";
-    context.strokeStyle = "#f65412";
+    context.strokeStyle = "#111111";
   }
 
   function draw(event) {
