@@ -238,7 +238,7 @@ body {
 .visual--city {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(54, 14, 1, 0.08)),
-    url("../BANNER.png") center center / contain no-repeat,
+    url("https://raw.githubusercontent.com/TyroneSPR/fuerza-popular-web/main/assets/banner.png") center center / contain no-repeat,
     linear-gradient(90deg, #ef6b00 0%, #ef6b00 76%, #ffffff 76%, #ffffff 100%);
 }
 
@@ -256,7 +256,7 @@ body {
 .visual--vote {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(54, 14, 1, 0.04)),
-    url("../Recurso 2.png") center center / contain no-repeat,
+    url("https://raw.githubusercontent.com/TyroneSPR/fuerza-popular-web/main/assets/marca-k3.png") center center / contain no-repeat,
     #ffffff;
 }
 
@@ -274,7 +274,7 @@ body {
 .visual--people {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(54, 14, 1, 0.16)),
-    url("../foto-fin-k (1).jpg") center 32% / cover no-repeat,
+    url("https://raw.githubusercontent.com/TyroneSPR/fuerza-popular-web/main/assets/acciones.jpg") center 32% / cover no-repeat,
     linear-gradient(135deg, #ef6b00 0%, #c94b00 100%);
 }
 
