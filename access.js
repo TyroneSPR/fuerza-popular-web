@@ -18,6 +18,12 @@ function setStoredEmail(email) {
 
 function appendAccessLog(entry) {
   const current = JSON.parse(localStorage.getItem(ACCESS_LOG_KEY) || "[]");
+  const exists = current.some((item) => item.email === entry.email);
+
+  if (exists) {
+    return;
+  }
+
   current.push(entry);
   localStorage.setItem(ACCESS_LOG_KEY, JSON.stringify(current));
 }
@@ -91,10 +97,10 @@ function buildAccessGate() {
 
 async function sendToGoogleSheets(payload) {
   if (!SHEETS_URL) {
-    return { ok: false, mode: "local" };
+    return { ok: false, mode: "local", status: "local-only" };
   }
 
-  await fetch(SHEETS_URL, {
+  const response = await fetch(SHEETS_URL, {
     method: "POST",
     headers: {
       "Content-Type": "text/plain;charset=utf-8",
@@ -102,7 +108,7 @@ async function sendToGoogleSheets(payload) {
     body: JSON.stringify(payload),
   });
 
-  return { ok: true, mode: "remote" };
+  return response.json();
 }
 
 function closeGate(overlay) {
@@ -125,10 +131,6 @@ function attachChangeEmailAction() {
 async function initAccessGate() {
   updateAccessLabels();
   attachChangeEmailAction();
-
-  if (getStoredEmail()) {
-    return;
-  }
 
   const overlay = buildAccessGate();
   const form = document.getElementById("access-gate-form");
@@ -164,7 +166,9 @@ async function initAccessGate() {
 
     try {
       const result = await sendToGoogleSheets(payload);
-      if (result.mode === "remote") {
+      if (result.status === "exists") {
+        successNode.textContent = "Ese correo ya estaba registrado. Acceso concedido.";
+      } else if (result.status === "created") {
         successNode.textContent = "Correo registrado y enviado a Google Sheets.";
       } else {
         successNode.textContent = "Correo registrado en modo prueba local.";
