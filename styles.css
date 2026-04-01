@@ -809,18 +809,33 @@ body {
   background: rgba(255, 255, 255, 0.45);
 }
 
-.gesture-card__icon {
+.gesture-card--controls {
+  text-align: center;
+}
+
+.control-guide {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.control-guide__item {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
-  margin: 0 auto 16px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ff8f4d 0%, #f65412 100%);
-  color: #ffffff;
-  font-size: 2rem;
+  min-width: 52px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #8a4c32;
   font-weight: 800;
+}
+
+.control-guide__item--active {
+  background: #f65412;
+  color: #ffffff;
 }
 
 .simulator-toolbar {
