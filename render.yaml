@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: fuerza-popular-web
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
