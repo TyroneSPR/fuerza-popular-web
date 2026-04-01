@@ -1,5 +1,6 @@
 const ACCESS_EMAIL_KEY = "k3AccessEmail";
 const ACCESS_LOG_KEY = "k3AccessLog";
+const ACCESS_PERSISTENT_EMAIL_KEY = "k3AccessEmailPersistent";
 const APP_CONFIG = window.APP_CONFIG || {};
 const SHEETS_URL = APP_CONFIG.sheetsUrl || "";
 const ACCESS_LOGO = APP_CONFIG.accessLogo || "assets/logo-fuerza-popular.png";
@@ -9,11 +10,20 @@ function isValidEmail(value) {
 }
 
 function getStoredEmail() {
-  return sessionStorage.getItem(ACCESS_EMAIL_KEY);
+  return (
+    sessionStorage.getItem(ACCESS_EMAIL_KEY) ||
+    localStorage.getItem(ACCESS_PERSISTENT_EMAIL_KEY)
+  );
 }
 
 function setStoredEmail(email) {
   sessionStorage.setItem(ACCESS_EMAIL_KEY, email);
+  localStorage.setItem(ACCESS_PERSISTENT_EMAIL_KEY, email);
+}
+
+function clearStoredEmail() {
+  sessionStorage.removeItem(ACCESS_EMAIL_KEY);
+  localStorage.removeItem(ACCESS_PERSISTENT_EMAIL_KEY);
 }
 
 function appendAccessLog(entry) {
@@ -126,7 +136,7 @@ function attachChangeEmailAction() {
   }
 
   changeButton.addEventListener("click", () => {
-    sessionStorage.removeItem(ACCESS_EMAIL_KEY);
+    clearStoredEmail();
     window.location.reload();
   });
 }
