@@ -201,6 +201,7 @@ body {
 .promo-card {
   overflow: hidden;
   min-height: 170px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(180deg, #ff8c47 0%, #f65412 58%, #d74209 100%);
 }
 
