@@ -692,8 +692,34 @@ body {
 }
 
 .access-gate__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   margin-top: 8px;
+}
+
+.access-gate__button:disabled {
+  opacity: 0.9;
+}
+
+.access-gate__button--loading {
+  cursor: wait;
+}
+
+.access-gate__spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: access-spin 0.75s linear infinite;
+}
+
+.access-gate__button--loading .access-gate__spinner {
+  display: inline-block;
 }
 
 .access-gate__success {
@@ -701,6 +727,12 @@ body {
   color: #1f8f57;
   font-size: 0.85rem;
   font-weight: 700;
+}
+
+@keyframes access-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .mark-example {

@@ -86,7 +86,10 @@ function buildAccessGate() {
           required
         />
         <p class="access-gate__error" id="access-gate-error"></p>
-        <button class="simulator-card__button access-gate__button" type="submit">Ingresar</button>
+        <button class="simulator-card__button access-gate__button" type="submit" id="access-submit-button">
+          <span class="access-gate__button-label">Ingresar</span>
+          <span class="access-gate__spinner" aria-hidden="true"></span>
+        </button>
       </form>
       <p class="access-gate__success" id="access-gate-success"></p>
     </div>
@@ -141,6 +144,8 @@ async function initAccessGate() {
   const emailInput = document.getElementById("access-email");
   const errorNode = document.getElementById("access-gate-error");
   const successNode = document.getElementById("access-gate-success");
+  const submitButton = document.getElementById("access-submit-button");
+  const submitLabel = submitButton?.querySelector(".access-gate__button-label");
 
   document.body.style.overflow = "hidden";
   emailInput.focus();
@@ -156,6 +161,15 @@ async function initAccessGate() {
       errorNode.textContent = "Ingresa un correo valido para continuar.";
       return;
     }
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.classList.add("access-gate__button--loading");
+    }
+    if (submitLabel) {
+      submitLabel.textContent = "Cargando...";
+    }
+    emailInput.disabled = true;
 
     const payload = {
       email,
