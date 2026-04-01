@@ -9,11 +9,11 @@ function isValidEmail(value) {
 }
 
 function getStoredEmail() {
-  return localStorage.getItem(ACCESS_EMAIL_KEY);
+  return sessionStorage.getItem(ACCESS_EMAIL_KEY);
 }
 
 function setStoredEmail(email) {
-  localStorage.setItem(ACCESS_EMAIL_KEY, email);
+  sessionStorage.setItem(ACCESS_EMAIL_KEY, email);
 }
 
 function appendAccessLog(entry) {
@@ -123,7 +123,7 @@ function attachChangeEmailAction() {
   }
 
   changeButton.addEventListener("click", () => {
-    localStorage.removeItem(ACCESS_EMAIL_KEY);
+    sessionStorage.removeItem(ACCESS_EMAIL_KEY);
     window.location.reload();
   });
 }
@@ -131,6 +131,10 @@ function attachChangeEmailAction() {
 async function initAccessGate() {
   updateAccessLabels();
   attachChangeEmailAction();
+
+  if (getStoredEmail()) {
+    return;
+  }
 
   const overlay = buildAccessGate();
   const form = document.getElementById("access-gate-form");
