@@ -10,6 +10,7 @@ const toolButtons = document.querySelectorAll("[data-mode]");
 
 if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
   const context = ballotCanvas.getContext("2d");
+  const pixelRatio = Math.max(window.devicePixelRatio || 1, 1);
   const state = {
     scale: 1,
     minScale: 1,
@@ -77,10 +78,11 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
     ballotStage.style.width = `${state.stageWidth}px`;
     ballotStage.style.height = `${state.stageHeight}px`;
 
-    ballotCanvas.width = state.stageWidth;
-    ballotCanvas.height = state.stageHeight;
+    ballotCanvas.width = Math.round(state.stageWidth * pixelRatio);
+    ballotCanvas.height = Math.round(state.stageHeight * pixelRatio);
     ballotCanvas.style.width = `${state.stageWidth}px`;
     ballotCanvas.style.height = `${state.stageHeight}px`;
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
     if (state.scale < state.minScale || state.minScale === 1) {
       state.minScale = 1;
@@ -119,7 +121,7 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
     state.hasDrawing = true;
     context.beginPath();
     context.moveTo(point.x, point.y);
-    context.lineWidth = 1.2;
+    context.lineWidth = 0.9;
     context.lineCap = "round";
     context.lineJoin = "round";
     context.strokeStyle = "#111111";
@@ -206,7 +208,7 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
   zoomInButton?.addEventListener("click", () => setZoom(state.scale + 0.2));
   zoomOutButton?.addEventListener("click", () => setZoom(state.scale - 0.2));
   clearButton?.addEventListener("click", () => {
-    context.clearRect(0, 0, ballotCanvas.width, ballotCanvas.height);
+    context.clearRect(0, 0, state.stageWidth, state.stageHeight);
     state.hasDrawing = false;
   });
 
