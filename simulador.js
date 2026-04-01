@@ -7,6 +7,8 @@ const zoomOutButton = document.getElementById("zoom-out");
 const clearButton = document.getElementById("clear-drawing");
 const finishButton = document.getElementById("finish-simulator");
 const toolButtons = document.querySelectorAll("[data-mode]");
+const DRAWING_STORAGE_KEY = "simuladorCedulaDibujo";
+const DRAW_LINE_WIDTH = 0.9;
 
 if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
   const context = ballotCanvas.getContext("2d");
@@ -27,6 +29,8 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
     stageWidth: 0,
     stageHeight: 0,
     hasDrawing: false,
+    strokes: [],
+    currentStroke: null,
   };
 
   function clamp(value, min, max) {
@@ -38,6 +42,99 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
       button.classList.toggle("simulator-tool--active", button.dataset.mode === state.mode);
     });
     ballotViewport.classList.toggle("ballot-viewport--drawing", state.mode === "draw");
+  }
+
+  function normalizePoint(point) {
+    if (!state.stageWidth || !state.stageHeight) {
+      return null;
+    }
+
+    return {
+      x: point.x / state.stageWidth,
+      y: point.y / state.stageHeight,
+    };
+  }
+
+  function denormalizePoint(point) {
+    return {
+      x: point.x * state.stageWidth,
+      y: point.y * state.stageHeight,
+    };
+  }
+
+  function persistDrawing() {
+    if (!state.strokes.length) {
+      sessionStorage.removeItem(DRAWING_STORAGE_KEY);
+      return;
+    }
+
+    sessionStorage.setItem(DRAWING_STORAGE_KEY, JSON.stringify(state.strokes));
+  }
+
+  function configureBrush() {
+    context.lineWidth = DRAW_LINE_WIDTH;
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.strokeStyle = "#111111";
+  }
+
+  function redrawDrawing() {
+    context.clearRect(0, 0, state.stageWidth, state.stageHeight);
+    configureBrush();
+
+    state.strokes.forEach((stroke) => {
+      if (!stroke.points || stroke.points.length === 0) {
+        return;
+      }
+
+      const firstPoint = denormalizePoint(stroke.points[0]);
+      context.beginPath();
+      context.moveTo(firstPoint.x, firstPoint.y);
+
+      if (stroke.points.length === 1) {
+        context.lineTo(firstPoint.x + 0.01, firstPoint.y + 0.01);
+      } else {
+        stroke.points.slice(1).forEach((point) => {
+          const absolutePoint = denormalizePoint(point);
+          context.lineTo(absolutePoint.x, absolutePoint.y);
+        });
+      }
+
+      context.stroke();
+    });
+  }
+
+  function restoreDrawing() {
+    const savedDrawing = sessionStorage.getItem(DRAWING_STORAGE_KEY);
+
+    if (!savedDrawing) {
+      return;
+    }
+
+    try {
+      const parsedDrawing = JSON.parse(savedDrawing);
+      if (!Array.isArray(parsedDrawing)) {
+        return;
+      }
+
+      state.strokes = parsedDrawing
+        .filter((stroke) => Array.isArray(stroke?.points) && stroke.points.length > 0)
+        .map((stroke) => ({
+          points: stroke.points
+            .filter((point) => Number.isFinite(point?.x) && Number.isFinite(point?.y))
+            .map((point) => ({
+              x: Math.min(Math.max(point.x, 0), 1),
+              y: Math.min(Math.max(point.y, 0), 1),
+            })),
+        }))
+        .filter((stroke) => stroke.points.length > 0);
+
+      state.hasDrawing = state.strokes.length > 0;
+    } catch (error) {
+      sessionStorage.removeItem(DRAWING_STORAGE_KEY);
+      state.strokes = [];
+      state.hasDrawing = false;
+    }
   }
 
   function applyTransform() {
@@ -83,6 +180,7 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
     ballotCanvas.style.width = `${state.stageWidth}px`;
     ballotCanvas.style.height = `${state.stageHeight}px`;
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    redrawDrawing();
 
     if (state.scale < state.minScale || state.minScale === 1) {
       state.minScale = 1;
@@ -117,48 +215,61 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
 
   function startDrawing(event) {
     const point = getCanvasPoint(event);
+    const normalizedPoint = normalizePoint(point);
+
+    if (!normalizedPoint) {
+      return;
+    }
+
     state.drawing = true;
     state.hasDrawing = true;
+    state.currentStroke = {
+      points: [normalizedPoint],
+    };
+    state.strokes.push(state.currentStroke);
+
+    configureBrush();
     context.beginPath();
     context.moveTo(point.x, point.y);
-    context.lineWidth = 0.9;
-    context.lineCap = "round";
-    context.lineJoin = "round";
-    context.strokeStyle = "#111111";
+    persistDrawing();
   }
 
   function draw(event) {
     if (!state.drawing) {
       return;
     }
-    state.hasDrawing = true;
+
     const point = getCanvasPoint(event);
+    const normalizedPoint = normalizePoint(point);
+
+    if (!normalizedPoint || !state.currentStroke) {
+      return;
+    }
+
+    state.currentStroke.points.push(normalizedPoint);
     context.lineTo(point.x, point.y);
     context.stroke();
+    persistDrawing();
   }
 
   function stopDrawing() {
     state.drawing = false;
+    state.currentStroke = null;
   }
 
   ballotViewport.addEventListener("pointerdown", (event) => {
+    if (state.mode === "draw") {
+      return;
+    }
+
     ballotViewport.setPointerCapture(event.pointerId);
     state.dragging = true;
     state.lastX = event.clientX;
     state.lastY = event.clientY;
-
-    if (state.mode === "draw") {
-      startDrawing(event);
-    }
   });
 
   ballotViewport.addEventListener("pointermove", (event) => {
     if (!state.dragging) {
-      return;
-    }
-
-    if (state.mode === "draw") {
-      draw(event);
       return;
     }
 
@@ -185,6 +296,7 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
       return;
     }
     event.preventDefault();
+    event.stopPropagation();
     ballotCanvas.setPointerCapture(event.pointerId);
     startDrawing(event);
   });
@@ -209,7 +321,10 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
   zoomOutButton?.addEventListener("click", () => setZoom(state.scale - 0.2));
   clearButton?.addEventListener("click", () => {
     context.clearRect(0, 0, state.stageWidth, state.stageHeight);
+    state.strokes = [];
+    state.currentStroke = null;
     state.hasDrawing = false;
+    sessionStorage.removeItem(DRAWING_STORAGE_KEY);
   });
 
   toolButtons.forEach((button) => {
@@ -225,9 +340,11 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
     } else {
       localStorage.setItem("simuladorResultado", "blank");
     }
+    sessionStorage.removeItem(DRAWING_STORAGE_KEY);
     window.location.href = "simulador-resultado.html";
   });
 
+  restoreDrawing();
   ballotImage.addEventListener("load", resizeStage);
   window.addEventListener("resize", resizeStage);
   if (ballotImage.complete) {
