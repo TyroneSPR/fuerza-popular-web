@@ -153,6 +153,7 @@ body {
   background: linear-gradient(135deg, #ff8a43 0%, #f65412 46%, #cf4109 100%);
 }
 
+
 .card__kicker {
   margin: 0;
   font-size: 1rem;
@@ -591,6 +592,115 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   box-shadow: 0 12px 24px rgba(214, 69, 10, 0.28);
+}
+
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(91, 28, 4, 0.78);
+  backdrop-filter: blur(10px);
+}
+
+.access-gate[hidden] {
+  display: none;
+}
+
+.access-gate__panel {
+  width: min(100%, 380px);
+  padding: 22px 18px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 241, 233, 0.98), rgba(255, 223, 206, 0.98)),
+    #fff5ef;
+  color: #8a4c32;
+  box-shadow: var(--shadow);
+}
+
+.access-gate__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.access-gate__logo {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: inset 0 0 0 3px rgba(246, 84, 18, 0.1);
+}
+
+.access-gate__eyebrow {
+  margin: 0 0 8px;
+  color: #c36337;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.access-gate__title {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.05;
+  color: #f65412;
+}
+
+.access-gate__text {
+  margin: 12px 0 0;
+  color: #8a4c32;
+  line-height: 1.45;
+}
+
+.access-gate__form {
+  margin-top: 16px;
+}
+
+.access-gate__label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.access-gate__input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(246, 84, 18, 0.26);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #8a4c32;
+  font: inherit;
+}
+
+.access-gate__input:focus {
+  outline: 2px solid rgba(246, 84, 18, 0.28);
+  border-color: rgba(246, 84, 18, 0.5);
+}
+
+.access-gate__error {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: #cf4109;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.access-gate__button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.access-gate__success {
+  margin: 12px 0 0;
+  color: #1f8f57;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .mark-example {
