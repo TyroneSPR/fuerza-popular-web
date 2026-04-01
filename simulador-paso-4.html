@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fuerza Popular | Simulador paso 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="phone-frame page-detail-shell">
+        <header class="topbar">
+          <a class="icon-button icon-button--link" href="simulador-paso-3.html" aria-label="Volver al paso anterior">&#8592;</a>
+          <p class="topbar__title">Simulador de cédula</p>
+          <div class="topbar__spacer"></div>
+        </header>
+
+        <section class="simulator-screen">
+          <article class="simulator-card simulator-card--step">
+            <div class="vote-well">
+              <div class="vote-well__sheet">
+                <div class="vote-well__columns">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="vote-well__curve"></div>
+              </div>
+            </div>
+
+            <h1>Vota bien</h1>
+
+            <p class="simulator-card__description">
+              Son cinco elecciones, divididas en cinco columnas de colores. Puedes votar por el
+              mismo partido en todas. En este simulador te enseñamos a marcar por Fuerza Popular
+              donde corresponda.
+            </p>
+
+            <div class="simulator-progress" aria-label="Paso 4 de 5">
+              <span class="simulator-progress__dot simulator-progress__dot--active"></span>
+              <span class="simulator-progress__dot simulator-progress__dot--active"></span>
+              <span class="simulator-progress__dot simulator-progress__dot--active"></span>
+              <span class="simulator-progress__dot simulator-progress__dot--active"></span>
+              <span class="simulator-progress__dot"></span>
+            </div>
+
+            <a class="simulator-card__button" href="simulador-paso-5.html">Siguiente</a>
+          </article>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

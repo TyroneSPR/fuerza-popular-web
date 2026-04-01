@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fuerza Popular | Simulador paso 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="phone-frame page-detail-shell">
+        <header class="topbar">
+          <a class="icon-button icon-button--link" href="simulador-paso-1.html" aria-label="Volver al paso anterior">&#8592;</a>
+          <p class="topbar__title">Simulador de cédula</p>
+          <div class="topbar__spacer"></div>
+        </header>
+
+        <section class="simulator-screen">
+          <article class="simulator-card simulator-card--step">
+            <div class="mark-example">
+              <div class="mark-example__sheet">
+                <div class="mark-example__box">
+                  <span class="mark-example__cross"></span>
+                  <small>Símbolo</small>
+                </div>
+                <div class="mark-example__box">
+                  <span class="mark-example__cross"></span>
+                  <small>Foto</small>
+                </div>
+              </div>
+              <div class="mark-example__check"></div>
+            </div>
+
+            <h1>Marca correctamente</h1>
+
+            <p class="simulator-card__description">
+              Usa solo aspa <strong>[x]</strong> o cruz <strong>[+]</strong> dentro del recuadro con
+              la foto o símbolo del partido. Así tu voto por Fuerza Popular será válido. Cualquier
+              otro símbolo o trazo anula tu voto.
+            </p>
+
+            <div class="simulator-progress" aria-label="Paso 2 de 4">
+              <span class="simulator-progress__dot simulator-progress__dot--active"></span>
+              <span class="simulator-progress__dot simulator-progress__dot--active"></span>
+              <span class="simulator-progress__dot"></span>
+              <span class="simulator-progress__dot"></span>
+            </div>
+
+            <a class="simulator-card__button" href="simulador-paso-3.html">Siguiente</a>
+          </article>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
