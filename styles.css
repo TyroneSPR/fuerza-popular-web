@@ -274,14 +274,14 @@ body {
 
 .visual--people {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(54, 14, 1, 0.08)),
-    url("https://raw.githubusercontent.com/TyroneSPR/fuerza-popular-web/main/assets/acciones-nueva.jpg") center center / contain no-repeat,
-    #ffffff;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(54, 14, 1, 0.16)),
+    url("https://raw.githubusercontent.com/TyroneSPR/fuerza-popular-web/main/assets/acciones-nueva.jpg") center 42% / cover no-repeat,
+    linear-gradient(135deg, #ef6b00 0%, #c94b00 100%);
 }
 
 .visual--people::before {
   inset: 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 42%, rgba(0, 0, 0, 0.04) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 42%, rgba(87, 24, 2, 0.12) 100%);
 }
 
 .info-card__content {
