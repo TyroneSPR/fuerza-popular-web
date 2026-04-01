@@ -14,7 +14,7 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
   const state = {
     scale: 1,
     minScale: 1,
-    maxScale: 3.5,
+    maxScale: 5,
     x: 0,
     y: 0,
     mode: "draw",
