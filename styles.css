@@ -473,6 +473,11 @@ body {
   background: #ffffff;
 }
 
+.image-viewer--simulator {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
 .simulator-screen {
   margin-top: 8px;
 }
@@ -763,31 +768,45 @@ body {
   text-transform: uppercase;
 }
 
-.mark-example__cross {
+.mark-example__target {
   position: relative;
-  width: 52px;
-  height: 52px;
-  border: 3px solid #9e765e;
-  background: #fffaf7;
+  display: block;
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  border: 4px solid #17110f;
+  box-shadow: 8px 6px 0 rgba(117, 82, 62, 0.45);
+  background-color: #fffaf7;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.mark-example__cross::before,
-.mark-example__cross::after {
+.mark-example__target--logo {
+  background-image: url("assets/logo-fuerza-popular.png");
+  background-size: 82%;
+}
+
+.mark-example__target--photo {
+  background-image: url("assets/keiko.jpeg");
+  background-size: cover;
+}
+
+.mark-example__target::before,
+.mark-example__target::after {
   content: "";
   position: absolute;
-  top: 23px;
+  top: 33px;
   left: 7px;
-  width: 34px;
-  height: 4px;
-  border-radius: 999px;
-  background: #f65412;
+  width: 54px;
+  height: 2px;
+  background: #111111;
 }
 
-.mark-example__cross::before {
+.mark-example__target::before {
   transform: rotate(45deg);
 }
 
-.mark-example__cross::after {
+.mark-example__target::after {
   transform: rotate(-45deg);
 }
 
