@@ -4,7 +4,7 @@ const ballotImage = document.getElementById("ballot-image");
 const ballotCanvas = document.getElementById("ballot-canvas");
 const zoomInButton = document.getElementById("zoom-in");
 const zoomOutButton = document.getElementById("zoom-out");
-const clearButton = document.getElementById("clear-drawing");
+const undoButton = document.getElementById("undo-drawing");
 const finishButton = document.getElementById("finish-simulator");
 const toolButtons = document.querySelectorAll("[data-mode]");
 const DRAWING_STORAGE_KEY = "simuladorCedulaDibujo";
@@ -102,6 +102,21 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
 
       context.stroke();
     });
+  }
+
+  function undoLastStroke() {
+    if (!state.strokes.length) {
+      return;
+    }
+
+    if (state.drawing) {
+      stopDrawing();
+    }
+
+    state.strokes.pop();
+    state.hasDrawing = state.strokes.length > 0;
+    persistDrawing();
+    redrawDrawing();
   }
 
   function restoreDrawing() {
@@ -319,13 +334,7 @@ if (ballotViewport && ballotStage && ballotImage && ballotCanvas) {
 
   zoomInButton?.addEventListener("click", () => setZoom(state.scale + 0.2));
   zoomOutButton?.addEventListener("click", () => setZoom(state.scale - 0.2));
-  clearButton?.addEventListener("click", () => {
-    context.clearRect(0, 0, state.stageWidth, state.stageHeight);
-    state.strokes = [];
-    state.currentStroke = null;
-    state.hasDrawing = false;
-    sessionStorage.removeItem(DRAWING_STORAGE_KEY);
-  });
+  undoButton?.addEventListener("click", undoLastStroke);
 
   toolButtons.forEach((button) => {
     button.addEventListener("click", () => {
